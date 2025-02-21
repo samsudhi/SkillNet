@@ -19,7 +19,7 @@ async function generatePoem() {
         //     method: 'POST',
         //     headers: {
         //         'Content-Type': 'application/json',
-        //         'Authorization': 'Bearer YOUR_API_KEY_HERE' // Replace with your actual API key
+        //         'Authorization': 'Bearer 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' // Replace with your actual API key
         //     },
         //     body: JSON.stringify({
         //         model: "sonar-pro",
