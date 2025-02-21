@@ -15,28 +15,26 @@ async function generatePoem() {
     logDebug(`Sending to Perplexity API:\nLine Count: ${lineCount}\nTheme: ${theme}`);
 
     try {
-        // const response = await fetch('https://api.perplexity.ai/chat/completions', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': 'Bearer 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' // Replace with your actual API key
-        //     },
-        //     body: JSON.stringify({
-        //         model: "sonar-pro",
-        //         messages: [
-        //             {
-        //                 role: "system",
-        //                 content: "You are a poetic AI assistant. Generate a poem based on the given theme and number of lines."
-        //             },
-        //             {
-        //                 role: "user",
-        //                 content: `Generate a ${lineCount}-line poem about ${theme}.`
-        //             }
-        //         ]
-        //     })
-        // });
-
-        const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+        const response = await fetch('https://api.perplexity.ai/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer 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' // Replace with your actual API key
+            },
+            body: JSON.stringify({
+                model: "sonar-pro",
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are a poetic AI assistant. Generate a poem based on the given theme and number of lines."
+                    },
+                    {
+                        role: "user",
+                        content: `Generate a ${lineCount}-line poem about ${theme}.`
+                    }
+                ]
+            })
+        });
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -49,7 +47,7 @@ async function generatePoem() {
         logDebug(`API Response:\n${JSON.stringify(data, null, 2)}`);
 
         // Display the poem
-        document.getElementById('poem-output').textContent = data.title;
+        document.getElementById('poem-output').textContent = data.choices[0].message.content;
     } catch (error) {
         // Log any errors
         logDebug(`Error calling Perplexity API:\n${error}`);
