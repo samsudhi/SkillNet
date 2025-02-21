@@ -23,7 +23,7 @@ async function generatePoem() {
                 'Origin': window.location.origin
             },
             body: JSON.stringify({
-                model: "sonar-medium-online",
+                model: "sonar-medium-chat",
                 messages: [
                     {
                         role: "system",
