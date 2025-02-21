@@ -18,7 +18,7 @@ async function generatePoem() {
     logDebug(`Sending to Perplexity API:\nLine Count: ${lineCount}\nTheme: ${theme}`);
 
     const requestBody = {
-        model: "mistral-7b-instruct",
+        model: "sonar-medium-chat",  // Updated to a valid model name
         messages: [
             {
                 role: "system",
@@ -37,20 +37,14 @@ async function generatePoem() {
         console.log("Attempting to send request to API");
         logDebug('Sending request to API...');
 
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-
         const response = await fetch('https://api.perplexity.ai/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer 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'
             },
-            body: JSON.stringify(requestBody),
-            signal: controller.signal
+            body: JSON.stringify(requestBody)
         });
-
-        clearTimeout(timeoutId);
 
         console.log(`Received response with status: ${response.status}`);
         logDebug(`Received response with status: ${response.status}`);
@@ -72,10 +66,5 @@ async function generatePoem() {
         }
     } catch (error) {
         console.error("Error in generatePoem:", error);
-        logDebug(`Error calling Perplexity API:\n${error.message}`);
-        if (error.name === 'AbortError') {
-            document.getElementById('poem-output').textContent = "The request timed out. Please try again.";
-        } else {
-            document.getElementById('poem-output').textContent = "An error occurred while generating the po
-
+        logDebug(`Error call
 
