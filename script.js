@@ -2,16 +2,14 @@ async function generatePoem() {
     const lineCount = document.getElementById('lineCount').value;
     const theme = document.getElementById('theme').value;
 
-    // Clear previous debug logs
     document.getElementById('debug-log').textContent = '';
+    document.getElementById('poem-output').textContent = 'Generating poem...';
 
-    // Check if lineCount and theme are valid
     if (!lineCount || !theme || lineCount < 1 || lineCount > 10) {
         alert('Please enter a valid number of lines (1-10) and a theme.');
         return;
     }
 
-    // Log user input
     logDebug(`Sending to Perplexity API:\nLine Count: ${lineCount}\nTheme: ${theme}`);
 
     try {
@@ -19,10 +17,10 @@ async function generatePoem() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer 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' // Replace with your actual API key
+                'Authorization': 'Bearer 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'
             },
             body: JSON.stringify({
-                model: "sonar-pro",
+                model: "sonar-medium-online",
                 messages: [
                     {
                         role: "system",
@@ -42,20 +40,16 @@ async function generatePoem() {
         }
 
         const data = await response.json();
-
-        // Log the API response
         logDebug(`API Response:\n${JSON.stringify(data, null, 2)}`);
-
-        // Display the poem
         document.getElementById('poem-output').textContent = data.choices[0].message.content;
     } catch (error) {
-        // Log any errors
-        logDebug(`Error calling Perplexity API:\n${error}`);
+        logDebug(`Error calling Perplexity API:\n${error.message}`);
+        document.getElementById('poem-output').textContent = "An error occurred while generating the poem. Please try again.";
     }
 }
 
-// Helper function to log messages to the debug section
 function logDebug(message) {
     const debugLog = document.getElementById('debug-log');
     debugLog.textContent += message + '\n\n';
 }
+
