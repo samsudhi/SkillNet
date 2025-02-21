@@ -12,6 +12,22 @@ async function generatePoem() {
 
     logDebug(`Sending to Perplexity API:\nLine Count: ${lineCount}\nTheme: ${theme}`);
 
+    const requestBody = {
+        model: "pplx-7b-chat",
+        messages: [
+            {
+                role: "system",
+                content: "You are a poetic AI assistant. Generate a poem based on the given theme and number of lines."
+            },
+            {
+                role: "user",
+                content: `Generate a ${lineCount}-line poem about ${theme}.`
+            }
+        ]
+    };
+
+    logDebug(`Request Body:\n${JSON.stringify(requestBody, null, 2)}`);
+
     try {
         const response = await fetch('https://api.perplexity.ai/chat/completions', {
             method: 'POST',
@@ -19,19 +35,7 @@ async function generatePoem() {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer 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'
             },
-            body: JSON.stringify({
-                model: "sonar-medium-chat",  // Updated to a valid model name
-                messages: [
-                    {
-                        role: "system",
-                        content: "You are a poetic AI assistant. Generate a poem based on the given theme and number of lines."
-                    },
-                    {
-                        role: "user",
-                        content: `Generate a ${lineCount}-line poem about ${theme}.`
-                    }
-                ]
-            })
+            body: JSON.stringify(requestBody)
         });
 
         if (!response.ok) {
@@ -47,4 +51,5 @@ async function generatePoem() {
         document.getElementById('poem-output').textContent = "An error occurred while generating the poem. Please try again.";
     }
 }
+
 
