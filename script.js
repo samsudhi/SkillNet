@@ -1,11 +1,16 @@
 async function generatePoem() {
+    console.log("generatePoem function called");
+    
     const lineCount = document.getElementById('lineCount').value;
     const theme = document.getElementById('theme').value;
+    
+    console.log(`Inputs - Line Count: ${lineCount}, Theme: ${theme}`);
 
     document.getElementById('debug-log').textContent = '';
     document.getElementById('poem-output').textContent = 'Generating poem...';
 
     if (!lineCount || !theme || lineCount < 1 || lineCount > 10) {
+        console.log("Invalid input detected");
         alert('Please enter a valid number of lines (1-10) and a theme.');
         return;
     }
@@ -13,7 +18,7 @@ async function generatePoem() {
     logDebug(`Sending to Perplexity API:\nLine Count: ${lineCount}\nTheme: ${theme}`);
 
     const requestBody = {
-        model: "mistral-7b-instruct",  // Updated model name
+        model: "mistral-7b-instruct",
         messages: [
             {
                 role: "system",
@@ -29,6 +34,7 @@ async function generatePoem() {
     logDebug(`Request Body:\n${JSON.stringify(requestBody, null, 2)}`);
 
     try {
+        console.log("Attempting to send request to API");
         logDebug('Sending request to API...');
         const response = await fetch('https://api.perplexity.ai/chat/completions', {
             method: 'POST',
@@ -39,6 +45,7 @@ async function generatePoem() {
             body: JSON.stringify(requestBody)
         });
 
+        console.log(`Received response with status: ${response.status}`);
         logDebug(`Received response with status: ${response.status}`);
 
         if (!response.ok) {
@@ -46,6 +53,7 @@ async function generatePoem() {
             throw new Error(`HTTP error! Status: ${response.status}, Text: ${errorText}`);
         }
 
+        console.log('Parsing response JSON...');
         logDebug('Parsing response JSON...');
         const data = await response.json();
         logDebug(`API Response:\n${JSON.stringify(data, null, 2)}`);
@@ -56,9 +64,17 @@ async function generatePoem() {
             throw new Error('Unexpected API response format');
         }
     } catch (error) {
+        console.error("Error in generatePoem:", error);
         logDebug(`Error calling Perplexity API:\n${error.message}`);
         document.getElementById('poem-output').textContent = "An error occurred while generating the poem. Please try again.";
     }
 }
+
+function logDebug(message) {
+    const debugLog = document.getElementById('debug-log');
+    debugLog.textContent += message + '\n\n';
+    console.log(message);
+}
+
 
 
