@@ -13,11 +13,14 @@ async function generatePoem() {
     logDebug(`Sending to Perplexity API:\nLine Count: ${lineCount}\nTheme: ${theme}`);
 
     try {
-        const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+        const apiUrl = 'https://api.perplexity.ai/chat/completions';
+        const response = await fetch(corsProxy + apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer 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'
+                'Authorization': 'Bearer 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',
+                'Origin': window.location.origin
             },
             body: JSON.stringify({
                 model: "sonar-medium-online",
