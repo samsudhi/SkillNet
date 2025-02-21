@@ -13,7 +13,7 @@ async function generatePoem() {
     logDebug(`Sending to Perplexity API:\nLine Count: ${lineCount}\nTheme: ${theme}`);
 
     const requestBody = {
-        model: "mistral-7b-instruct",
+        model: "mistral-7b-instruct",  // Updated model name
         messages: [
             {
                 role: "system",
@@ -50,6 +50,15 @@ async function generatePoem() {
         const data = await response.json();
         logDebug(`API Response:\n${JSON.stringify(data, null, 2)}`);
 
-        if (data.choices &&
+        if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+            document.getElementById('poem-output').textContent = data.choices[0].message.content;
+        } else {
+            throw new Error('Unexpected API response format');
+        }
+    } catch (error) {
+        logDebug(`Error calling Perplexity API:\n${error.message}`);
+        document.getElementById('poem-output').textContent = "An error occurred while generating the poem. Please try again.";
+    }
+}
 
 
