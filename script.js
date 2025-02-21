@@ -13,17 +13,14 @@ async function generatePoem() {
     logDebug(`Sending to Perplexity API:\nLine Count: ${lineCount}\nTheme: ${theme}`);
 
     try {
-        const corsProxy = 'https://cors-anywhere.herokuapp.com/';
-        const apiUrl = 'https://api.perplexity.ai/chat/completions';
-        const response = await fetch(corsProxy + apiUrl, {
+        const response = await fetch('https://api.perplexity.ai/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer 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',
-                'Origin': window.location.origin
+                'Authorization': 'Bearer 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'
             },
             body: JSON.stringify({
-                model: "sonar-medium-chat",
+                model: "sonar-medium-chat",  // Updated to a valid model name
                 messages: [
                     {
                         role: "system",
@@ -49,10 +46,5 @@ async function generatePoem() {
         logDebug(`Error calling Perplexity API:\n${error.message}`);
         document.getElementById('poem-output').textContent = "An error occurred while generating the poem. Please try again.";
     }
-}
-
-function logDebug(message) {
-    const debugLog = document.getElementById('debug-log');
-    debugLog.textContent += message + '\n\n';
 }
 
