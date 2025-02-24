@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poem Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Poem Generator</h1>
-        <div class="input-section">
-            <input type="number" id="lineCount" placeholder="Number of lines" min="1" max="10">
-            <input type="text" id="theme" placeholder="Theme">
-            <button onclick="generatePoem()">Generate Poem</button>
-        </div>
-        <div id="poem-output"></div>
+        <form id="poemForm">
+            <label for="lines">Number of Lines:</label>
+            <input type="number" id="lines" name="lines" min="1" max="10" value="4" required><br>
 
-        <div id="debug-output" style="background-color: #f9f9f9; padding: 10px; margin-top: 20px; border: 1px solid #ccc;">
-            <h3>Debug Output</h3>
-            <pre id="debug-log"></pre>
+            <label for="topic">Topic of Interest:</label>
+            <input type="text" id="topic" name="topic" placeholder="e.g., nature, space" required><br>
+
+            <label for="humor">Humor Level (0 = Serious, 5 = Very Funny):</label>
+            <input type="number" id="humor" name="humor" min="0" max="5" value="0" required><br>
+
+            <button type="submit">Generate Poem</button>
+        </form>
+        <div id="poemOutput">
+            <h2>Your Poem:</h2>
+            <p id="poemText">Click "Generate Poem" to create your masterpiece!</p>
         </div>
     </div>
     <script src="script.js"></script>
